@@ -42,6 +42,10 @@ button {
     cursor: pointer;
 }
 
+img {
+    user-select: none;
+}
+
 .hidden-scrollable {
     overflow: auto;
     /* For Firefox */
