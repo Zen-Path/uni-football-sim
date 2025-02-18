@@ -1,10 +1,9 @@
-#landing {
+#content {
     display: flex;
     flex-direction: column;
     align-items: center;
 
     width: 100vw;
-    min-width: 600px;
     height: 100vh;
 
     background-image: url(../assets/images/landing_background.jpg);
@@ -12,17 +11,32 @@
     background-position: center;
 }
 
-#landing h1 {
+h1 {
     font-family: "Carter One", sans-serif;
-    font-size: 80px;
+    font-size: min(120px, 15vh);
+
     text-align: center;
     text-transform: uppercase;
+    line-height: 1.1;
 
-    margin: 30vh 0px 0px 0px;
+    --text-outline-color: var(--clr-primary-a20);
+    --text-outline-size: 2px;
+    color: white;
+    text-shadow:
+        calc(-1 * var(--text-outline-size)) calc(-1 * var(--text-outline-size)) 0
+            var(--text-outline-color),
+        var(--text-outline-size) calc(-1 * var(--text-outline-size)) 0
+            var(--text-outline-color),
+        calc(-1 * var(--text-outline-size)) var(--text-outline-size) 0
+            var(--text-outline-color),
+        var(--text-outline-size) var(--text-outline-size) 0 var(--text-outline-color);
+
+    margin: 30vh 10px 0px;
+
     user-select: none;
 }
 
-#landing .primary-btn {
+.primary-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,28 +52,36 @@
     transition: transform 0.2s ease;
 }
 
-#landing .primary-btn:hover {
-    transform: scale(1.2);
+.primary-btn:hover {
+    outline: 2px solid white;
 }
 
-#landing .primary-btn:active {
+.primary-btn:active {
     transform: scale(0.95);
 }
 
-#landing .primary-btn .icon {
+.primary-btn .icon {
     max-width: 25px;
     max-height: 25px;
     transition: transform 0.5s ease;
 }
 
-#landing .primary-btn:hover .icon {
+.primary-btn:hover .icon {
     transform: rotate(180deg);
 }
 
-#landing .primary-btn p {
+.primary-btn p {
     font-size: 20px;
     letter-spacing: 10%;
     text-transform: uppercase;
     font-weight: bold;
     user-select: none;
+    color: white;
+    font-family: "Roboto", sans-serif;
+}
+
+@media (max-width: 800px) {
+    h1 {
+        font-size: max(30px, 15vw);
+    }
 }
