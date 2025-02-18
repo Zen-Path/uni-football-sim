@@ -1,3 +1,29 @@
+:root {
+    /* Color A */
+    --clr-primary-a0: #5c0b0b;
+    --clr-primary-a10: #6e0101;
+    --clr-primary-a20: #c22020;
+
+    --clr-surface-a0: #b72323;
+    --clr-surface-a10: #a0153e;
+    --clr-surface-a20: #d04646;
+    --clr-surface-a30: #c05f5f;
+    --clr-primary-a40: #fb917f;
+    --clr-surface-a50: #f5b8ac;
+
+    /* Color B */
+    --clr-primary-b0: #0b376d;
+    --clr-primary-b10: #144582;
+    --clr-primary-b20: #6ba8f3;
+
+    --clr-surface-b0: #4145ca;
+    --clr-surface-b10: #24276e;
+    --clr-surface-b20: #4970d1;
+    --clr-surface-b30: #697fc2;
+    --clr-primary-b40: #97adeb;
+    --clr-surface-b50: #b8c1e1;
+}
+
 * {
     margin: 0;
     padding: 0;
