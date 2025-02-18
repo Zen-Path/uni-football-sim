@@ -1,3 +1,4 @@
+import { TEAMS_DATA } from "../data/teams.js";
 import { PlayerCard } from "./player.js";
 
 export class Team {
@@ -128,3 +129,7 @@ export class TeamBanner {
             .join(":");
     }
 }
+
+export const DEFAULT_TEAMS = TEAMS_DATA.map((team) => {
+    return new Team(team.name, `${Team.LOGOS_DIR}/${team.imgName}`);
+});
