@@ -1,39 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistent de Fotbal</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/game.css">
-    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.png">
-</head>
-<body>
-    <div class="container">
-        <!-- Zona de cărți din stânga -->
-        <div class="card-zone left">
-            <div class="card" draggable="true">1</div>
-            <div class="card" draggable="true">2</div>
-            <div class="card" draggable="true">3</div>
-            <div class="card" draggable="true">4</div>
-            <div class="card" draggable="true">5</div>
-            <div class="card" draggable="true">6</div>
-        </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Asistent de Fotbal</title>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/game.css" />
+        <link rel="icon" type="image/x-icon" href="../assets/images/favicon.png" />
+    </head>
 
-        <div class="sketch-container">
-            <div id="sketch"></div>
-        </div>
+    <body>
+        <main id="content">
+            <div id="sidebar-left"></div>
+            <div class="main-area">
+                <div id="banner-container"></div>
+                <div id="board">
+                    <img
+                        src="../assets/images/football-field.png"
+                        alt="Football field"
+                        class="field"
+                        draggable="false" />
 
-        <!-- Zona de cărți din dreapta -->
-        <div class="card-zone right">
-            <div class="card" draggable="true">A</div>
-            <div class="card" draggable="true">B</div>
-            <div class="card" draggable="true">C</div>
-            <div class="card" draggable="true">D</div>
-            <div class="card" draggable="true">E</div>
-            <div class="card" draggable="true">F</div>
-        </div>
-    </div>
-    <script src="../js/game.js"></script>
-</body>
+                    <div id="mini-card-container"></div>
+                </div>
+
+                <form id="teamForm">
+                    <div class="action-area">
+                        <div class="team-options-container left">
+                            <select name="teamA_player_count">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <select name="teamA_order">
+                                <option value="manual">Manual</option>
+                                <option value="best">Best</option>
+                                <option value="worst">Worst</option>
+                                <option value="random">Random</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-container">
+                            <button
+                                type="button"
+                                class="arrow-btn"
+                                onclick="previousStep()">
+                                <img
+                                    src="../assets/icons/icon_arrow-left.svg"
+                                    alt="Left arrow icon"
+                                    title="Previous step"
+                                    draggable="false" />
+                            </button>
+                            <button
+                                type="button"
+                                class="full-screen-btn"
+                                onclick="toggleFullScreen()">
+                                <img
+                                    src="../assets/icons/icon_full-screen.svg"
+                                    alt="Full screen icon"
+                                    title="Toggle full screen"
+                                    draggable="false" />
+                            </button>
+                            <button type="button" class="arrow-btn" onclick="nextStep()">
+                                <img
+                                    src="../assets/icons/icon_arrow-right.svg"
+                                    alt="Right arrow icon"
+                                    title="Next step"
+                                    draggable="false" />
+                            </button>
+                        </div>
+
+                        <div class="team-options-container right">
+                            <select name="teamB_player_count">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <select name="teamB_order">
+                                <option value="manual">Manual</option>
+                                <option value="best">Best</option>
+                                <option value="worst">Worst</option>
+                                <option value="random">Random</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="apply-btn">Apply</button>
+                </form>
+            </div>
+            <div id="sidebar-right"></div>
+        </main>
+
+        <script src="../js/main.js" type="module"></script>
+    </body>
 </html>

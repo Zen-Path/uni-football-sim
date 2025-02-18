@@ -1,97 +1,519 @@
-/* Resetare margini */
+:root {
+    --content-padding-vertical: 15px;
+    --content-padding-horizontal: 20px;
+
+    /* BANNER */
+    --badge-border-radius: 20px;
+    --badge-padding: 15px;
+
+    --ribbon-width: 90px;
+    --ribbon-after-height: 35px;
+
+    /* CARDS */
+    --sidebar-padding-horizontal: 12px;
+    --sidebar-padding-vertical: 14px;
+
+    --full-card-outline-color: white;
+    --full-card-outline-size: 3px;
+    --full-card-border-radius: 25px;
+
+    --full-profile-picture-dimension: 65px;
+    --full-profile-picture-padding-horizontal: 10px;
+    --full-profile-picture-padding-vertical: 10px;
+
+    /* MAIN */
+    --board-margin-bottom: 20px;
+
+    /* BTN AREA */
+    --team-form-height: 85px;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 16px;
+    background: linear-gradient(135deg, var(--clr-surface-b0), var(--clr-surface-a0));
+}
+
+#content {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+
     height: 100vh;
-    background-color: #2b7a0b;
-}
-
-/* Container general */
-.container {
-    display: flex;
-    align-items: center;
+    overflow-x: auto;
     gap: 20px;
+    padding: var(--content-padding-vertical) var(--content-padding-horizontal);
 }
 
-/* Zonele pentru cărți */
-.card-zone {
-    width: 100px;
+#content.full-screen {
+    display: block;
+}
+
+/* SIDEBAR */
+
+#sidebar-left,
+#sidebar-right {
+    height: calc(100vh - 2 * var(--content-padding-vertical));
+    /*
+    Since the cards have a slight margin for the outline, we need to increase the
+    bottom padding for consistency.
+    */
+    padding: var(--sidebar-padding-vertical) var(--sidebar-padding-horizontal)
+        calc(var(--sidebar-padding-vertical) + var(--full-card-outline-size));
+    border-radius: 20px;
+}
+
+#sidebar-left {
+    background-color: var(--clr-surface-a10);
+    box-shadow: 0px 0px 8px var(--clr-surface-a10);
+}
+
+#sidebar-right {
+    background-color: var(--clr-surface-b10);
+    box-shadow: 0px 0px 8px var(--clr-surface-b10);
+}
+
+/* FULL CARD */
+
+.full-cards-container {
     display: flex;
     flex-direction: column;
+
+    height: 100%;
+    gap: 6px;
+    border-radius: var(--full-card-border-radius);
+
+    overflow-y: auto;
+}
+
+.full-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    width: 190px;
+    margin: var(--full-card-outline-size);
+    padding: 20px 12px;
+    border-radius: var(--full-card-border-radius);
+
+    font-size: 20px;
+}
+
+.full-card:hover {
+    cursor: pointer;
+    outline: var(--full-card-outline-size) solid var(--full-card-outline-color);
+}
+
+#sidebar-left .full-card {
+    background: linear-gradient(
+        to bottom,
+        var(--clr-surface-a20),
+        var(--clr-surface-a50)
+    );
+}
+
+#sidebar-right .full-card {
+    background: linear-gradient(
+        to bottom,
+        var(--clr-surface-b20),
+        var(--clr-surface-b50)
+    );
+}
+
+@media (max-width: 1400px) {
+    .full-card {
+        width: 170px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .full-card {
+        width: 140px;
+        font-size: 16px;
+    }
+}
+
+/* PLAYER STRENGTH */
+
+.player-strength {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* PROFILE PICTURE */
+
+.profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    width: calc(
+        var(--full-profile-picture-dimension) +
+            var(--full-profile-picture-padding-horizontal)
+    );
+    height: calc(
+        var(--full-profile-picture-dimension) +
+            var(--full-profile-picture-padding-vertical)
+    );
+
+    border-radius: 50%;
+    border: 3px solid var(--full-card-outline-color);
+}
+
+.profile-picture {
+    width: var(--full-profile-picture-dimension);
+    height: var(--full-profile-picture-dimension);
+    border-radius: 50%;
+}
+
+#sidebar-left .profile-picture-container {
+    background-color: var(--clr-surface-a30);
+}
+
+#sidebar-right .profile-picture-container {
+    background-color: var(--clr-surface-b30);
+}
+
+@media (max-width: 1100px) {
+    .profile-picture-container {
+        width: calc(
+            0.8 * var(--full-profile-picture-dimension) +
+                var(--full-profile-picture-padding-horizontal)
+        );
+        height: calc(
+            0.8 * var(--full-profile-picture-dimension) +
+                var(--full-profile-picture-padding-vertical)
+        );
+    }
+
+    .profile-picture {
+        width: calc(0.8 * var(--full-profile-picture-dimension));
+        height: calc(0.8 * var(--full-profile-picture-dimension));
+    }
+}
+
+/* PLAYER NAME */
+
+.full-card .last-name {
+    margin-top: 8px;
+
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#sidebar-left .full-card .last-name {
+    color: var(--clr-primary-a0);
+}
+
+#sidebar-right .full-card .last-name {
+    color: var(--clr-primary-b0);
+}
+
+@media (max-width: 1100px) {
+    .full-card .last-name {
+        font-size: 14px;
+    }
+}
+
+/* PLAYER STATS */
+
+.stats-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-top: 10px;
+    width: 100%;
+
+    user-select: none;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-description {
+    font-size: 0.7em;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 0.9em;
+    font-family: "Roboto Mono", sans-serif;
+    font-weight: bold;
+}
+
+#sidebar-left .stat-value {
+    color: var(--clr-primary-a0);
+}
+
+#sidebar-right .stat-value {
+    color: var(--clr-primary-b0);
+}
+
+/* MAIN CONTENT */
+
+.main-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* BANNER */
+
+.banner {
+    display: flex;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    padding: 0px 15px;
+}
+
+.badge.left {
+    flex-direction: row;
+    background: linear-gradient(
+        90deg,
+        var(--clr-surface-a10) 0%,
+        var(--clr-surface-a20) 100%
+    );
+    border-radius: var(--badge-border-radius) 0px 0px var(--badge-border-radius);
+}
+
+.badge.right {
+    flex-direction: row-reverse;
+    background: linear-gradient(
+        90deg,
+        var(--clr-surface-b20) 0%,
+        var(--clr-surface-b10) 100%
+    );
+    border-radius: 0px var(--badge-border-radius) var(--badge-border-radius) 0px;
+}
+
+.badge p {
+    width: 220px;
+
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+}
+
+.badge .logo {
+    max-width: 40px;
+    max-width: 40px;
+}
+
+.ribbon {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #ffd700;
+    width: var(--ribbon-width);
+
+    margin: 0px 0px -10px 0px;
+    box-shadow: 0px 0px 8px #ffd700;
+}
+
+.ribbon .icon {
+    width: 50px;
+    height: 50px;
+    margin: 5px 0px 8px;
+}
+
+.ribbon p {
+    color: black;
+    font-family: "Roboto Mono", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    user-select: none;
+}
+
+.ribbon:after {
+    position: absolute;
+    bottom: calc(-1 * var(--ribbon-after-height));
+    left: 50%;
+    transform: translateX(-50%);
+
+    content: "";
+
+    border-left: calc(var(--ribbon-width) / 2 + 1px) solid transparent;
+    border-right: calc(var(--ribbon-width) / 2 + 1px) solid transparent;
+    border-top: calc(1px + var(--ribbon-after-height)) solid #ffd700;
+
+    filter: drop-shadow(1px 1px 5px #ffd700);
+}
+
+@media (max-width: 1100px) {
+    .badge p {
+        width: 150px;
+    }
+}
+
+/* BANNER */
+
+#board {
+    display: flex;
+    position: relative;
+    margin: 80px 0px var(--board-margin-bottom);
+}
+
+/* TODO, change when implementing main game */
+#board .field {
+    height: calc(100vh - 300px);
+    border-radius: 10px;
+}
+
+@media (max-width: 1400px) {
+    #board:not(.full-screen) .field {
+        width: calc(50vw);
+        height: 100%;
+        border-radius: 10px;
+    }
+}
+
+#board.full-screen {
+    margin: 0px 0px var(--board-margin-bottom);
+}
+
+#board.full-screen .field {
+    height: calc(
+        100vh - 2 * var(--content-padding-vertical) - var(--team-form-height) -
+            var(--board-margin-bottom)
+    );
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* MINI CARDS */
+
+.mini-card {
+    position: absolute;
+    color: red;
+}
+
+.mini-card:hover {
+    cursor: pointer;
+}
+
+.mini-card img {
+    --dimension: 60px;
+    height: var(--dimension);
+    width: var(--dimension);
+    border-radius: 50%;
+    border: 4px solid var(--full-card-outline-color);
+
+    transform: translate(-50%, -50%);
+}
+
+.mini-card.left img {
+    background-color: var(--clr-surface-a30);
+}
+
+.mini-card.right img {
+    background-color: var(--clr-surface-b30);
+}
+
+/* BUTTON AREA */
+
+#teamForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: var(--team-form-height);
+    margin-top: auto;
     gap: 10px;
 }
 
-.card-zone.left {
-    justify-content: flex-start;
-}
-
-.card-zone.right {
-    justify-content: flex-end;
-}
-
-/* Stilizare cărți */
-.card {
-    width: 80px;
-    height: 40px;
-    background-color: #ffcc00;
-    border: 2px solid #000;
-    border-radius: 5px;
+.action-area {
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 16px;
+    justify-content: center;
+
+    gap: 40px;
+    background-color: inherit;
+}
+
+.team-options-container {
+    display: flex;
+    gap: 15px;
+}
+
+.team-options-container select {
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.team-options-container.left select {
+    background-color: var(--clr-surface-a50);
+}
+
+.team-options-container.right select {
+    background-color: var(--clr-surface-b50);
+}
+
+.btn-container {
+    display: flex;
+    gap: 30px;
+}
+
+.full-screen-btn,
+.arrow-btn {
+    padding: 6px 15px;
+    background-color: inherit;
+    transition: filter 0.2s ease;
+}
+
+.full-screen-btn:hover,
+.arrow-btn:hover {
+    filter: invert();
+}
+
+.full-screen-btn img {
+    width: 25px;
+    height: 25px;
+}
+
+.arrow-btn img {
+    width: 30px;
+    height: 30px;
+}
+
+.apply-btn {
+    padding: 8px 10px;
+    width: 100px;
+    border-radius: 10px;
+
+    font-size: 14px;
+    letter-spacing: 2%;
+    text-transform: uppercase;
     font-weight: bold;
-    cursor: grab;
+    color: white;
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
 }
 
-/* Cărți în timpul tragerii */
-.card:active {
-    cursor: grabbing;
-}
-
-/* Teren de fotbal */
-.field {
-    position: relative;
-    width: 600px;
-    height: 400px;
-    background-color: #4caf50;
-    border: 5px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Linia de centru */
-.center-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 2px;
-    height: 100%;
-    background-color: white;
-    transform: translateX(-50%);
-}
-
-/* Cercul de centru */
-.center-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80px;
-    height: 80px;
-    border: 2px solid white;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.center-dot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
+.apply-btn:hover {
+    outline: 2px solid white;
 }
