@@ -97,3 +97,15 @@ export class PlayerCard extends Element {
         return cardElem;
     }
 }
+
+export const DEFAULT_PLAYERS = PLAYERS_DATA.map((player) => {
+    return new Player(
+        player.firstName,
+        player.lastName,
+        `${Player.PROFILE_PICTURES_DIR}/${player.imgName}`,
+        new Stat("Accuracy", null, "acc"),
+        new Stat("Reach", null, "rch"),
+        new Stat("Capture", null, "cpt"),
+        new Stat("Block", null, "blk"),
+    );
+});
