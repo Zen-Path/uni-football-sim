@@ -38,3 +38,62 @@ class Player {
         return String(Math.floor(Math.random() * 100)).padStart(2, 0);
     }
 }
+
+export class PlayerCard extends Element {
+    create() {
+        const cardElem = document.createElement("div");
+        cardElem.classList.add("full-card");
+
+        const profilePictureContainerElem = document.createElement("div");
+        profilePictureContainerElem.classList.add("profile-picture-container");
+
+        const profilePictureElem = document.createElement("img");
+        profilePictureElem.classList.add("profile-picture");
+        profilePictureElem.src = this.data.profilePicturePath;
+        profilePictureElem.alt = this.data.fullName;
+        profilePictureElem.title = this.data.fullName;
+        profilePictureElem.draggable = false;
+
+        profilePictureContainerElem.append(profilePictureElem);
+
+        const lastNameElem = document.createElement("p");
+        lastNameElem.classList.add("last-name");
+        lastNameElem.textContent = this.data.lastName;
+
+        const statsContainerElem = document.createElement("div");
+        statsContainerElem.classList.add("stats-container");
+
+        statsContainerElem.append(
+            ...this.data.stats.map((stat) => {
+                const statElem = document.createElement("div");
+                statElem.classList.add("stat");
+
+                const descriptionElem = document.createElement("p");
+                descriptionElem.classList.add("stat-description");
+                descriptionElem.title = stat.name;
+                descriptionElem.textContent = stat.shortName;
+
+                const valueElem = document.createElement("p");
+                valueElem.classList.add("stat-value");
+                valueElem.textContent = String(stat.value).padStart(2, 0);
+
+                statElem.append(descriptionElem, valueElem);
+                return statElem;
+            }),
+        );
+
+        const strengthElem = document.createElement("p");
+        strengthElem.classList.add("player-strength");
+        strengthElem.textContent = this.data.calcStrength();
+
+        cardElem.append(
+            profilePictureContainerElem,
+            lastNameElem,
+            statsContainerElem,
+            strengthElem,
+        );
+
+        this.data.fullCardElem = cardElem;
+        return cardElem;
+    }
+}
