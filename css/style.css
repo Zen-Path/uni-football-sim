@@ -42,6 +42,19 @@ button {
     cursor: pointer;
 }
 
+.hidden-scrollable {
+    overflow: auto;
+    /* For Firefox */
+    scrollbar-width: none;
+    /* For Internet Explorer and Edge */
+    -ms-overflow-style: none;
+}
+
+.hidden-scrollable::-webkit-scrollbar {
+    /* For Chrome, Safari, and newer Edge */
+    display: none;
+}
+
 /* Fonts */
 
 @font-face {
