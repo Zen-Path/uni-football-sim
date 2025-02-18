@@ -51,3 +51,80 @@ export class Team {
         return winningChance;
     }
 }
+
+export class TeamBanner {
+    static TEAMS_WINNING_CHANCE_ID = "teams-winning-chance";
+    static BANNER_CONTAINER_ID = "banner-container";
+
+    constructor(teams) {
+        this.teams = teams;
+    }
+
+    create() {
+        const bannerElem = document.createElement("div");
+        bannerElem.classList.add("banner");
+
+        bannerElem.append(
+            this.#createTeamBadge(this.teams[0]),
+            this.#createRibbon(),
+            this.#createTeamBadge(this.teams[1]),
+        );
+
+        return bannerElem;
+    }
+
+    #createTeamBadge(team) {
+        const badgeElem = document.createElement("div");
+        badgeElem.classList.add("badge", team.side);
+
+        const logoElem = document.createElement("img");
+        logoElem.classList.add("logo");
+        logoElem.alt = `${team.name} Logo`;
+        logoElem.draggable = false;
+        logoElem.src = team.logo || "";
+
+        const nameElem = document.createElement("p");
+        nameElem.textContent = team.name;
+
+        badgeElem.append(logoElem, nameElem);
+
+        return badgeElem;
+    }
+
+    #createRibbon() {
+        const ribbonElem = document.createElement("div");
+        ribbonElem.classList.add("ribbon");
+
+        const iconElem = document.createElement("img");
+        iconElem.classList.add("icon");
+        iconElem.src = "../assets/icons/icon_gold-ball.png";
+        iconElem.alt = "Gold ball";
+        iconElem.draggable = false;
+
+        const chanceElem = document.createElement("p");
+        chanceElem.id = TeamBanner.TEAMS_WINNING_CHANCE_ID;
+        chanceElem.textContent = this.#composeSuccessRate();
+
+        ribbonElem.append(iconElem, chanceElem);
+        return ribbonElem;
+    }
+
+    updateSuccessRate() {
+        const successRateElem = document.querySelector(
+            `#${TeamBanner.TEAMS_WINNING_CHANCE_ID}`,
+        );
+        if (successRateElem) {
+            successRateElem.textContent = this.#composeSuccessRate();
+        }
+    }
+
+    #composeSuccessRate() {
+        // TODO: Replace with actual logic
+        const teamAChance = this.teams[0].calcWinningChance();
+        const teamBChance = 100 - teamAChance;
+
+        return [teamAChance, teamBChance]
+            .map((chance) => `${String(chance.toFixed(0)).padStart(2, 0)}`)
+            .join(":");
+    }
+}
