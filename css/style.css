@@ -39,11 +39,32 @@ button {
     cursor: pointer;
 }
 
-/* Resources */
+/* Fonts */
 
 @font-face {
     font-family: "Carter One";
     src: url("../assets/fonts/CarterOne-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../assets/fonts/Roboto-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../assets/fonts/Roboto-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: bold;
+}
+
+@font-face {
+    font-family: "Roboto Mono";
+    src: url("../assets/fonts/RobotoMono-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
