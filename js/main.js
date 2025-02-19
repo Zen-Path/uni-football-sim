@@ -85,15 +85,11 @@ function setup(teams, preferences, teamBanner) {
     teams[1].players = players.slice(preferences.teamA.playerCount);
 
     const leftSidebarElem = teams[0].createSidebar();
-    while (SIDEBAR_LEFT.children[0]) {
-        SIDEBAR_LEFT.removeChild(SIDEBAR_LEFT.children[0]);
-    }
+    SIDEBAR_LEFT.replaceChildren();
     SIDEBAR_LEFT.appendChild(leftSidebarElem);
 
     const rightSidebarElem = teams[1].createSidebar();
-    while (SIDEBAR_RIGHT.children[0]) {
-        SIDEBAR_RIGHT.removeChild(SIDEBAR_RIGHT.children[0]);
-    }
+    SIDEBAR_RIGHT.replaceChildren();
     SIDEBAR_RIGHT.appendChild(rightSidebarElem);
 
     players.forEach((player) => {
@@ -102,9 +98,7 @@ function setup(teams, preferences, teamBanner) {
         });
     });
 
-    while (MINI_CARD_CONTAINER.children[0]) {
-        MINI_CARD_CONTAINER.removeChild(MINI_CARD_CONTAINER.children[0]);
-    }
+    MINI_CARD_CONTAINER.replaceChildren();
 
     teams.forEach((team) => {
         const playerCount = team.players.length;
