@@ -39,6 +39,24 @@ const POSITIONS = {
         [24, 34],
     ],
 };
+const VALID_PLAYER_COUNTS = Object.keys(POSITIONS).map((count) => parseInt(count));
+
+class TeamPreferences {
+    // NOTE: playerCount must be included in VALID_PLAYER_COUNTS.
+    constructor(playerCount = null, playerOrder = null) {
+        if (!playerCount || !VALID_PLAYER_COUNTS.includes(playerCount)) {
+            this.playerCount = VALID_PLAYER_COUNTS[1];
+        } else {
+            this.playerCount = playerCount;
+        }
+        this.playerOrder = playerOrder ? playerOrder : Team.PLAYER_ORDER.BEST;
+    }
+}
+
+let PREFERENCES = {
+    teamA: new TeamPreferences(),
+    teamB: new TeamPreferences(),
+};
 
 function toggleFullScreen() {
     const content = document.getElementById("content");
@@ -61,10 +79,13 @@ function previousStep() {
     console.log("Previous step....");
 }
 
-function setup(teams, countA, countB, teamBanner) {
-    const players = getUniqueRandomElements(DEFAULT_PLAYERS, countA + countB);
-    teams[0].players = players.slice(0, countA);
-    teams[1].players = players.slice(countA);
+function setup(teams, preferences, teamBanner) {
+    const players = getUniqueRandomElements(
+        DEFAULT_PLAYERS,
+        preferences.teamA.playerCount + preferences.teamB.playerCount,
+    );
+    teams[0].players = players.slice(0, preferences.teamA.playerCount);
+    teams[1].players = players.slice(preferences.teamA.playerCount);
 
     const leftSidebarElem = teams[0].createSidebar();
     while (SIDEBAR_LEFT.children[0]) {
@@ -93,7 +114,13 @@ function setup(teams, countA, countB, teamBanner) {
             const miniCardElem = document.createElement("div");
             miniCardElem.classList.add("mini-card", team.side);
 
-            const [top, left] = POSITIONS[team.players.length][i];
+            // If the playerCount is somehow invalid, pick the highest valid one.
+            let top, left;
+            if (!VALID_PLAYER_COUNTS.includes(team.players.length)) {
+                [top, left] = POSITIONS[VALID_PLAYER_COUNTS[-1]][i];
+            } else {
+                [top, left] = POSITIONS[team.players.length][i];
+            }
             miniCardElem.style.top =
                 i < (team.players.length + 1) / 2 ? `${top}%` : `${100 - top}%`;
 
@@ -119,24 +146,24 @@ function main() {
     const teamBannerElem = teamBanner.create();
     BANNER_CONTAINER.appendChild(teamBannerElem);
 
-    setup(teams, 10, 5, teamBanner);
+    setup(teams, PREFERENCES, teamBanner);
 
     document.getElementById("teamForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
         const formData = new FormData(event.target);
-        const teamData = {
-            teamA: {
-                playerCount: parseInt(formData.get("teamA_player_count")),
-                order: formData.get("teamA_order"),
-            },
-            teamB: {
-                playerCount: parseInt(formData.get("teamB_player_count")),
-                order: formData.get("teamB_order"),
-            },
+        PREFERENCES = {
+            teamA: new TeamPreferences(
+                parseInt(formData.get("teamA_player_count")),
+                formData.get("teamA_order"),
+            ),
+            teamB: new TeamPreferences(
+                parseInt(formData.get("teamB_player_count")),
+                formData.get("teamB_order"),
+            ),
         };
 
-        setup(teams, teamData.teamA.playerCount, teamData.teamB.playerCount, teamBanner);
+        setup(teams, PREFERENCES, teamBanner);
     });
 }
 
