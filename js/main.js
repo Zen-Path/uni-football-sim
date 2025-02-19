@@ -61,14 +61,11 @@ let PREFERENCES = {
 function toggleFullScreen() {
     const content = document.getElementById("content");
 
-    const fullScreenElems = [content, BOARD]
-    fullScreenElems.forEach((element) => element.classList.toggle("full-screen")
-    );
+    const fullScreenElems = [content, BOARD];
+    fullScreenElems.forEach((element) => element.classList.toggle("full-screen"));
 
     const hiddenElems = [BANNER_CONTAINER, SIDEBAR_LEFT, SIDEBAR_RIGHT];
-    hiddenElems.forEach(
-        (element) => element.classList.toggle("hidden"),
-    );
+    hiddenElems.forEach((element) => element.classList.toggle("hidden"));
 }
 
 function nextStep() {
