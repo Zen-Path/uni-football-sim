@@ -107,19 +107,21 @@ function setup(teams, preferences, teamBanner) {
     }
 
     teams.forEach((team) => {
+        const playerCount = team.players.length;
+
         team.players.forEach((player, i) => {
             const miniCardElem = document.createElement("div");
-            miniCardElem.classList.add("mini-card", team.side);
+            miniCardElem.classList.add("mini-card", team.side, `count-${playerCount}`);
 
             // If the playerCount is somehow invalid, pick the highest valid one.
             let top, left;
-            if (!VALID_PLAYER_COUNTS.includes(team.players.length)) {
+            if (!VALID_PLAYER_COUNTS.includes(playerCount)) {
                 [top, left] = POSITIONS[VALID_PLAYER_COUNTS[-1]][i];
             } else {
-                [top, left] = POSITIONS[team.players.length][i];
+                [top, left] = POSITIONS[playerCount][i];
             }
             miniCardElem.style.top =
-                i < (team.players.length + 1) / 2 ? `${top}%` : `${100 - top}%`;
+                i < (playerCount + 1) / 2 ? `${top}%` : `${100 - top}%`;
 
             miniCardElem.style.left =
                 team.side === Team.SIDE.LEFT ? `${left}%` : `${100 - left}%`;
