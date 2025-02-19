@@ -59,6 +59,10 @@ img {
     display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 /* Fonts */
 
 @font-face {

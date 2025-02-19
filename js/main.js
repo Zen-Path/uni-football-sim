@@ -40,23 +40,17 @@ const POSITIONS = {
     ],
 };
 
-let fullScreenStatus = false;
-
 function toggleFullScreen() {
     const content = document.getElementById("content");
-    [content, BOARD].forEach((element) =>
-        fullScreenStatus
-            ? element.classList.remove("full-screen")
-            : element.classList.add("full-screen"),
+
+    const fullScreenElems = [content, BOARD]
+    fullScreenElems.forEach((element) => element.classList.toggle("full-screen")
     );
 
-    const elements = [BANNER_CONTAINER, SIDEBAR_LEFT, SIDEBAR_RIGHT];
-
-    elements.forEach(
-        (element) => (element.style.display = fullScreenStatus ? "block" : "none"),
+    const hiddenElems = [BANNER_CONTAINER, SIDEBAR_LEFT, SIDEBAR_RIGHT];
+    hiddenElems.forEach(
+        (element) => element.classList.toggle("hidden"),
     );
-
-    fullScreenStatus = !fullScreenStatus;
 }
 
 function nextStep() {
