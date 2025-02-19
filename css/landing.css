@@ -19,7 +19,7 @@ h1 {
     text-transform: uppercase;
     line-height: 1.1;
 
-    --text-outline-color: var(--clr-primary-a20);
+    --text-outline-color: var(--clr-primary-b20);
     --text-outline-size: 2px;
     color: white;
     text-shadow:
