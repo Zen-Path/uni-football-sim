@@ -30,7 +30,7 @@ export class Team {
 
     createSidebar() {
         const sidebarElem = document.createElement("div");
-        sidebarElem.classList.add("full-cards-container", "hidden-scrollable");
+        sidebarElem.classList.add("full-cards-container", "hidden-scroll-bar");
 
         sidebarElem.append(...this.getFullCards());
         this.sidebarElem = sidebarElem;

@@ -46,7 +46,7 @@ img {
     user-select: none;
 }
 
-.hidden-scrollable {
+.hidden-scroll-bar {
     overflow: auto;
     /* For Firefox */
     scrollbar-width: none;
@@ -54,7 +54,7 @@ img {
     -ms-overflow-style: none;
 }
 
-.hidden-scrollable::-webkit-scrollbar {
+.hidden-scroll-bar::-webkit-scrollbar {
     /* For Chrome, Safari, and newer Edge */
     display: none;
 }
