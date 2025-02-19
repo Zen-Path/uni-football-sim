@@ -61,6 +61,10 @@ h1 {
 }
 
 .primary-btn .icon {
+    --dimension: 25px;
+    max-width: var(--dimension);
+    max-height: var(--dimension);
+
     transition: transform 0.5s ease, filter 0.5s ease-in;
 }
 
@@ -75,6 +79,7 @@ h1 {
     text-transform: uppercase;
     font-weight: bold;
     user-select: none;
+
     color: white;
     font-family: "Roboto", sans-serif;
 }
