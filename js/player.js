@@ -32,11 +32,17 @@ class Player {
         });
 
         this.fullCardElem = null;
+
+        this.strength = this.calcStrength();
+    }
+
+    fmtStrength() {
+        return String(this.strength).padStart(2, 0);
     }
 
     calcStrength() {
         // TODO: Replace with actual algorithm
-        return String(randRange(30, 99)).padStart(2, 0);
+        return randRange(30, 99)
     }
 }
 
@@ -85,7 +91,7 @@ export class PlayerCard extends Element {
 
         const strengthElem = document.createElement("p");
         strengthElem.classList.add("player-strength");
-        strengthElem.textContent = this.data.calcStrength();
+        strengthElem.textContent = this.data.strength;
 
         cardElem.append(
             profilePictureContainerElem,
