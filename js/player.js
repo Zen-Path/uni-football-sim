@@ -41,8 +41,8 @@ class Player {
     }
 
     calcStrength() {
-        // TODO: Replace with actual algorithm
-        return randRange(30, 99)
+        // TODO: Use proper algorithm.
+        return randRange(30, 99);
     }
 }
 
@@ -117,7 +117,8 @@ export class MiniCard extends Element {
         // If the playerCount is somehow invalid, pick the highest valid one.
         let top, left;
         if (!VALID_PLAYER_COUNTS.includes(playerCount)) {
-            [top, left] = POSITIONS[VALID_PLAYER_COUNTS[-1]][i];
+            [top, left] =
+                POSITIONS[VALID_PLAYER_COUNTS[VALID_PLAYER_COUNTS.length - 1]][i];
         } else {
             [top, left] = POSITIONS[playerCount][i];
         }
