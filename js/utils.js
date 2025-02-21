@@ -29,10 +29,10 @@ export function randRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function createOption(value) {
+export function createOption(value, text = null) {
     const option = document.createElement("option");
     option.value = value;
-    option.textContent = value;
+    option.textContent = text ? text : value;
     return option;
 }
 
