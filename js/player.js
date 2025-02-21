@@ -1,5 +1,5 @@
 import { PLAYERS_DATA } from "../data/players.js";
-import { Element, Stat } from "./utils.js";
+import { Element, Stat, randRange } from "./utils.js";
 
 class Player {
     static PROFILE_PICTURES_DIR = "../assets/images/players";
@@ -26,7 +26,7 @@ class Player {
 
         this.stats = [this.accuracy, this.reach, this.capture, this.block].map((stat) => {
             if (!stat.value) {
-                stat.value = 10 + Math.floor(Math.random() * (100 - 10));
+                stat.value = randRange(20, 100);
             }
             return stat;
         });
@@ -35,7 +35,8 @@ class Player {
     }
 
     calcStrength() {
-        return String(Math.floor(Math.random() * 100)).padStart(2, 0);
+        // TODO: Replace with actual algorithm
+        return String(randRange(30, 99)).padStart(2, 0);
     }
 }
 
