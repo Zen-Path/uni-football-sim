@@ -53,6 +53,7 @@ class Game {
         this.bannerContainer.appendChild(teamBannerElem);
 
         this.players = [];
+        this.startingTeam = randRange(0, 1);
     }
 
     setup() {
@@ -96,9 +97,8 @@ class Game {
         this.steps = null;
         this.stepIdx = 0;
 
-        this.startingTeam = randRange(0, 1);
-
         this.updateStep(0);
+        this.startingTeam = Number(!this.startingTeam);
     }
 
     toggleFullScreen() {
