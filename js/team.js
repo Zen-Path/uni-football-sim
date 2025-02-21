@@ -1,5 +1,6 @@
 import { TEAMS_DATA } from "../data/teams.js";
 import { PlayerCard } from "./player.js";
+import { shuffleArray } from "./utils.js";
 
 export class Team {
     static LOGOS_DIR = "../assets/images/teams";
@@ -31,6 +32,30 @@ export class Team {
 
     getFullCards() {
         return this.players.map((player) => new PlayerCard(player).create());
+    }
+
+    orderPlayers(order) {
+        switch (order) {
+            case Team.PLAYER_ORDER.BEST:
+                this.players = this.#sortPlayersBest().reverse();
+                break;
+            case Team.PLAYER_ORDER.WORST:
+                this.players = this.#sortPlayersBest();
+                break;
+            case Team.PLAYER_ORDER.RANDOM:
+                this.players = shuffleArray(this.players);
+                break;
+            case Team.PLAYER_ORDER.MANUAL:
+                // nothing to do.
+                break;
+            default:
+                break;
+        }
+    }
+
+    #sortPlayersBest() {
+        // TODO: Use proper algorithm.
+        return this.players.sort((a, b) => a.strength - b.strength);
     }
 }
 

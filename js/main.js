@@ -51,16 +51,23 @@ class Game {
         this.teamBanner = new TeamBanner(this.teams[0], this.teams[1]);
         const teamBannerElem = this.teamBanner.create();
         this.bannerContainer.appendChild(teamBannerElem);
+
+        this.players = [];
     }
 
     setup() {
-        this.players = getUniqueRandomElements(
-            DEFAULT_PLAYERS,
-            this.preferences.playerCount * 2,
-        );
+        // Prevent generating new players when simply modifying the player order.
+        if (!(this.players.length === 2 * this.preferences.playerCount)) {
+            this.players = getUniqueRandomElements(
+                DEFAULT_PLAYERS,
+                this.preferences.playerCount * 2,
+            );
 
-        this.teams[0].players = this.players.slice(0, this.preferences.playerCount);
-        this.teams[1].players = this.players.slice(this.preferences.playerCount);
+            this.teams[0].players = this.players.slice(0, this.preferences.playerCount);
+            this.teams[1].players = this.players.slice(this.preferences.playerCount);
+        }
+
+        this.teams.forEach((team) => team.orderPlayers(this.preferences.playerOrder));
 
         const leftSidebarElem = this.teams[0].createSidebar();
         this.sidebarLeft.replaceChildren();
@@ -232,7 +239,7 @@ function main() {
         const formData = new FormData(event.target);
         game.preferences = {
             playerCount: parseInt(formData.get("player-count")),
-            playerOrder: formData.get("player-order"),
+            playerOrder: parseInt(formData.get("player-order")),
         };
         game.setup();
     });
