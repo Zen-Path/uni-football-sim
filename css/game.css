@@ -276,8 +276,8 @@ body {
 }
 
 .badge .logo {
-    max-width: 40px;
-    max-width: 40px;
+    width: 40px;
+    width: 40px;
 }
 
 .ribbon {
@@ -351,6 +351,7 @@ body {
 
 .goal-announcement {
     position: absolute;
+
     top: 50%;
     left: 50%;
     padding: 15px 30px;
