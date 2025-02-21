@@ -37,10 +37,10 @@ export class Team {
     orderPlayers(order) {
         switch (order) {
             case Team.PLAYER_ORDER.BEST:
-                this.players = this.#sortPlayersBest().reverse();
+                this.players = this.#sortPlayersBest();
                 break;
             case Team.PLAYER_ORDER.WORST:
-                this.players = this.#sortPlayersBest();
+                this.players = this.#sortPlayersBest().reverse();
                 break;
             case Team.PLAYER_ORDER.RANDOM:
                 this.players = shuffleArray(this.players);
@@ -55,7 +55,16 @@ export class Team {
 
     #sortPlayersBest() {
         // TODO: Use proper algorithm.
-        return this.players.sort((a, b) => a.strength - b.strength);
+
+        return this.players.sort((a, b) => {
+            // First, sort by strength (descending)
+            if (b.strength !== a.strength) {
+                return b.strength - a.strength; // Change to a.strength - b.strength for ascending
+            }
+
+            // If strengths are equal, sort by fullName (ascending)
+            return a.fullName.localeCompare(b.fullName);
+        });
     }
 }
 
