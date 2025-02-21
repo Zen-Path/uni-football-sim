@@ -177,6 +177,7 @@ class Game {
         result.classList.add("ball");
         result.src = "../assets/icons/icon_football-ball.svg";
         result.alt = "Football ball";
+        result.draggable = false;
 
         return result;
     }
