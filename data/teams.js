@@ -45,8 +45,8 @@ export const TEAMS_DATA = [
         imgName: "chelsea-fc.png",
     },
     {
-        name: "Celtic",
-        imgUrl: "https://footballdatabase.com/logos/club/80px/25.png",
-        imgName: "celtic.png",
+        name: "Newcastle United",
+        imgUrl: "https://footballdatabase.com/logos/club/80px/183.png",
+        imgName: "newcastle-united.png",
     },
 ];
