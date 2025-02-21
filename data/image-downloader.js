@@ -15,7 +15,11 @@ import { TEAMS_DATA } from "./teams.js";
  * @param {Array} dataArray - Array of objects with "imgUrl" and "imgName".
  * @param {string} outputDir - Directory where images will be saved.
  */
-const downloadImages = async (dataArray, outputDir = "images") => {
+const downloadImages = async (
+    dataArray,
+    outputDir = "images",
+    overwriteExisting = false,
+) => {
     // Resolve full path (handles relative paths)
     const fullOutputDir = path.resolve(__dirname, outputDir);
 
@@ -25,8 +29,19 @@ const downloadImages = async (dataArray, outputDir = "images") => {
         console.log(`Created directory: ${fullOutputDir}`);
     }
 
-    // Function to download a single image
     const downloadImage = async (url, filename) => {
+        const filePath = path.join(fullOutputDir, filename);
+
+        // Check if the file exists
+        if (fs.existsSync(filePath)) {
+            if (overwriteExisting) {
+                console.log(`Overwriting: ${filename}`);
+            } else {
+                console.log(`Skipping (exists): ${filename}`);
+                return;
+            }
+        }
+
         try {
             const response = await axios({
                 url,
