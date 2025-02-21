@@ -209,7 +209,9 @@ class Game {
         const playerOrderPreference = document.createElement("select");
         playerOrderPreference.name = "player-order";
         playerOrderPreference.append(
-            ...Object.entries(Team.PLAYER_ORDER).map(([text, value]) => createOption(value, text)),
+            ...Object.entries(Team.PLAYER_ORDER).map(([text, value]) =>
+                createOption(value, text),
+            ),
         );
         playerOrderPreference.selectedIndex = Object.values(Team.PLAYER_ORDER).indexOf(
             this.preferences.playerOrder,
