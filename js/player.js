@@ -98,6 +98,35 @@ export class PlayerCard extends Element {
     }
 }
 
+export class MiniCard extends Element {
+    create(player, team, playerCount, i) {
+        const miniCardElem = document.createElement("div");
+        miniCardElem.classList.add("mini-card", team.side ? "right" : "left", `count-${playerCount}`);
+
+        // If the playerCount is somehow invalid, pick the highest valid one.
+        let top, left;
+        if (!VALID_PLAYER_COUNTS.includes(playerCount)) {
+            [top, left] = POSITIONS[VALID_PLAYER_COUNTS[-1]][i];
+        } else {
+            [top, left] = POSITIONS[playerCount][i];
+        }
+        miniCardElem.style.top = i < (playerCount + 1) / 2 ? `${top}%` : `${100 - top}%`;
+
+        miniCardElem.style.left = team.side ? `${100 - left}%` : `${left}%`;
+
+        const profilePictureElem = document.createElement("img");
+        profilePictureElem.classList.add("profile-picture");
+        profilePictureElem.src = player.profilePicturePath;
+        profilePictureElem.title = `${player.firstName} ${player.lastName}`;
+        profilePictureElem.draggable = false;
+
+        miniCardElem.append(profilePictureElem);
+
+        return miniCardElem;
+    }
+}
+
+
 export const DEFAULT_PLAYERS = PLAYERS_DATA.map((player) => {
     return new Player(
         player.firstName,
