@@ -66,16 +66,15 @@ const downloadImages = async (
         }
     };
 
-    // Process all images sequentially
     for (const item of dataArray) {
         if (item.imgUrl && item.imgName) {
             await downloadImage(item.imgUrl, item.imgName);
         } else {
-            console.warn(`Skipping item: Missing imgUrl or imgName`, item);
+            console.warn(`Skipping (missing imgUrl or imgName): `, item);
         }
     }
 
-    console.log("All downloads complete.");
+    console.log(":: All downloads complete.");
 };
 
 downloadImages(PLAYERS_DATA, "../assets/images/players");
