@@ -76,7 +76,8 @@ export class TeamBanner {
         this.teamA = teamA;
         this.teamB = teamB;
 
-        this.scoreElem = null;
+        this.scoreContainer = null;
+        this.ribbonElem = null;
     }
 
     create() {
@@ -120,23 +121,36 @@ export class TeamBanner {
         iconElem.alt = "Gold ball";
         iconElem.draggable = false;
 
-        const scoreElem = document.createElement("p");
-        scoreElem.textContent = this.#composeScore();
-        this.scoreElem = scoreElem;
+        this.scoreContainer = this.createScoreContainer();
+        ribbonElem.append(iconElem, this.scoreContainer);
 
-        ribbonElem.append(iconElem, scoreElem);
+        this.ribbonElem = ribbonElem;
 
         return ribbonElem;
     }
 
-    updateScore() {
-        if (this.scoreElem) {
-            this.scoreElem.textContent = this.#composeScore();
-        }
+    createScoreContainer() {
+        const result = document.createElement("div");
+        result.classList.add("score-container")
+
+        const scoreElems = [this.teamA, this.teamB].map((team) => {
+            const score = document.createElement("span");
+            score.classList.add("score");
+            score.textContent = team.score;
+            return score;
+        })
+
+        const separator = document.createElement("span");
+        separator.classList.add("separator");
+
+        result.append(scoreElems[0], separator, scoreElems[1])
+        return result;
     }
 
-    #composeScore() {
-        return [this.teamA, this.teamB].map((team) => String(team.score)).join(":");
+    updateScore() {
+        this.ribbonElem.removeChild(this.scoreContainer);
+        this.scoreContainer = this.createScoreContainer();
+        this.ribbonElem.append(this.scoreContainer)
     }
 }
 

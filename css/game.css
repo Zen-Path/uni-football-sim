@@ -300,12 +300,33 @@ body {
     margin: 5px 0px 8px;
 }
 
-.ribbon p {
-    color: black;
+.ribbon .score-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    user-select: none;
+}
+
+.ribbon .score {
     font-family: "Roboto Mono", sans-serif;
     font-size: 18px;
     font-weight: bold;
-    user-select: none;
+    width: 100%;
+}
+
+.ribbon .score:first-child {
+    text-align: right;
+}
+
+.ribbon .score:last-child {
+    text-align: left;
+}
+
+.ribbon .separator {
+    min-width: 8px;
+    min-height: 2px;
+    background-color: black;
 }
 
 .ribbon:after {
