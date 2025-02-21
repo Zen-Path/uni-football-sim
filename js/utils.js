@@ -14,6 +14,21 @@ export function shuffleArray(array) {
     return array;
 }
 
+/**
+ * Returns a random integer between min and max (inclusive).
+ * @param {number} min - The lower bound (inclusive).
+ * @param {number} max - The upper bound (inclusive).
+ * @returns {number} A random integer between min and max.
+ */
+export function randRange(min, max) {
+    // Ensure min and max are integers
+    min = Math.ceil(min);
+    max = Math.floor(max);
+
+    // Generate a random integer between min and max (inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export class Element {
     constructor(data) {
         this.data = data;
