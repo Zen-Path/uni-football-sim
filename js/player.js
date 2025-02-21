@@ -101,7 +101,11 @@ export class PlayerCard extends Element {
 export class MiniCard extends Element {
     create(player, team, playerCount, i) {
         const miniCardElem = document.createElement("div");
-        miniCardElem.classList.add("mini-card", team.side ? "right" : "left", `count-${playerCount}`);
+        miniCardElem.classList.add(
+            "mini-card",
+            team.side ? "right" : "left",
+            `count-${playerCount}`,
+        );
 
         // If the playerCount is somehow invalid, pick the highest valid one.
         let top, left;
@@ -126,6 +130,39 @@ export class MiniCard extends Element {
     }
 }
 
+// TODO: rewrite once logic is discussed
+// prettier-ignore
+const POSITIONS = {
+    5: [
+        [50, 14],
+
+        [24, 32],
+
+        [50, 28],
+        [50, 42],
+
+        [24, 32],
+    ],
+    10: [
+        [50, 14],
+
+        [24, 20],
+        [24, 34],
+
+        [39, 26],
+        [39, 44],
+
+        [50, 35],
+
+        [39, 26],
+        [39, 44],
+
+        [24, 20],
+        [24, 34],
+    ],
+};
+
+export const VALID_PLAYER_COUNTS = Object.keys(POSITIONS).map((count) => parseInt(count));
 
 export const DEFAULT_PLAYERS = PLAYERS_DATA.map((player) => {
     return new Player(

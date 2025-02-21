@@ -1,169 +1,206 @@
-import { getUniqueRandomElements } from "./utils.js";
+import { getUniqueRandomElements, randRange } from "./utils.js";
 import { Team, TeamBanner, DEFAULT_TEAMS } from "./team.js";
+import { MiniCard } from "./player.js";
 import { DEFAULT_PLAYERS } from "./player.js";
 
-const BANNER_CONTAINER = document.getElementById(TeamBanner.BANNER_CONTAINER_ID);
-const SIDEBAR_LEFT = document.body.querySelector("#sidebar-left");
-const SIDEBAR_RIGHT = document.body.querySelector("#sidebar-right");
-const BOARD = document.getElementById("board");
-const MINI_CARD_CONTAINER = document.getElementById("mini-card-container");
+class Game {
+    constructor() {
+        this.bannerContainer = document.getElementById(TeamBanner.BANNER_CONTAINER_ID);
 
-// TODO: rewrite once logic is discussed
-// prettier-ignore
-const POSITIONS = {
-    5: [
-        [50, 14],
+        this.sidebarLeft = document.body.querySelector("#sidebar-left");
+        this.sidebarRight = document.body.querySelector("#sidebar-right");
 
-        [24, 32],
+        this.field = document.getElementById("board");
+        this.miniCardContainer = document.getElementById("mini-card-container");
 
-        [50, 28],
-        [50, 42],
+        this.toggleFullScreenBtn = document.getElementById("toggle-full-screen-btn");
+        this.toggleFullScreenBtn.addEventListener("click", () => {
+            this.toggleFullScreen();
+        });
 
-        [24, 32],
-    ],
-    10: [
-        [50, 14],
+        this.nextStepBtn = document.getElementById("next-step-btn");
+        this.nextStepBtn.addEventListener("click", () => {
+            this.updateStep(1);
+        });
 
-        [24, 20],
-        [24, 34],
+        this.previousStepBtn = document.getElementById("previous-step-btn");
+        this.previousStepBtn.addEventListener("click", () => {
+            this.updateStep(-1);
+        });
 
-        [39, 26],
-        [39, 44],
+        this.fieldBall = this.createFieldBall();
+        this.goalAnnouncementElem = this.createGoalAnnouncement();
+        this.goalAnnouncementElem.classList.add("hidden");
 
-        [50, 35],
+        this.preferences = {
+            playerCount: 10,
+            teamAOrder: Team.PLAYER_ORDER.BEST,
+            teamBOrder: Team.PLAYER_ORDER.WORST,
+        };
 
-        [39, 26],
-        [39, 44],
+        this.teams = getUniqueRandomElements(DEFAULT_TEAMS, 2).map((team, i) => {
+            team.side = i;
+            return team;
+        });
 
-        [24, 20],
-        [24, 34],
-    ],
-};
-const VALID_PLAYER_COUNTS = Object.keys(POSITIONS).map((count) => parseInt(count));
+        this.teamBanner = new TeamBanner(this.teams[0], this.teams[1]);
+        const teamBannerElem = this.teamBanner.create();
+        this.bannerContainer.appendChild(teamBannerElem);
+    }
 
-class TeamPreferences {
-    // NOTE: playerCount must be included in VALID_PLAYER_COUNTS.
-    constructor(playerCount = null, playerOrder = null) {
-        if (!playerCount || !VALID_PLAYER_COUNTS.includes(playerCount)) {
-            this.playerCount = VALID_PLAYER_COUNTS[1];
-        } else {
-            this.playerCount = playerCount;
+    setup() {
+        this.players = getUniqueRandomElements(
+            DEFAULT_PLAYERS,
+            this.preferences.playerCount * 2,
+        );
+
+        this.teams[0].players = this.players.slice(0, this.preferences.playerCount);
+        this.teams[1].players = this.players.slice(this.preferences.playerCount);
+
+        const leftSidebarElem = this.teams[0].createSidebar();
+        this.sidebarLeft.replaceChildren();
+        this.sidebarLeft.appendChild(leftSidebarElem);
+
+        const rightSidebarElem = this.teams[1].createSidebar();
+        this.sidebarRight.replaceChildren();
+        this.sidebarRight.appendChild(rightSidebarElem);
+
+        this.miniCardContainer.replaceChildren();
+        this.miniCards = this.teams
+            .map((team) => {
+                return team.players.map((player, i) => {
+                    const miniCardElem = new MiniCard().create(
+                        player,
+                        team,
+                        team.players.length,
+                        i,
+                    );
+                    this.miniCardContainer.append(miniCardElem);
+                    return miniCardElem;
+                });
+            })
+            .flat();
+
+        this.steps = null;
+        this.stepIdx = 0;
+
+        this.startingTeam = randRange(0, 1);
+
+        this.updateStep(0);
+    }
+
+    toggleFullScreen() {
+        const content = document.getElementById("content");
+
+        const fullScreenElems = [content, this.field];
+        fullScreenElems.forEach((element) => element.classList.toggle("full-screen"));
+
+        const hiddenElems = [this.bannerContainer, this.sidebarLeft, this.sidebarRight];
+        hiddenElems.forEach((element) => element.classList.toggle("hidden"));
+    }
+
+    generateSteps() {
+        let steps = [];
+
+        // TODO: Use proper algorithm.
+
+        const goalKeeperPositions = [0, this.players.length / 2];
+
+        steps.push(goalKeeperPositions[this.startingTeam]);
+
+        for (let i = 0; i < randRange(3, 15); i++) {
+            let playerIdx = randRange(1, this.players.length - 1);
+            while (
+                steps[steps.length - 1] === playerIdx ||
+                goalKeeperPositions.includes(playerIdx)
+            ) {
+                playerIdx = randRange(1, this.players.length - 1);
+            }
+            steps.push(playerIdx);
         }
-        this.playerOrder = playerOrder ? playerOrder : Team.PLAYER_ORDER.BEST;
+
+        steps.push(goalKeeperPositions[randRange(0, 1)]);
+
+        return steps;
+    }
+
+    updateStep(value) {
+        if (!this.steps) {
+            this.steps = this.generateSteps();
+        }
+
+        if (this.stepIdx === 0) {
+            this.previousStepBtn.setAttribute("disabled", true);
+            if (value < 0) {
+                return;
+            }
+        } else {
+            this.previousStepBtn.removeAttribute("disabled");
+        }
+
+        if (this.stepIdx === this.steps.length - 1) {
+            this.teams[
+                Number(this.steps[this.stepIdx] < (this.players.length - 1) / 2)
+            ].score += 1;
+            this.goalAnnouncementElem.classList.remove("hidden");
+            this.restartMatch();
+        } else {
+            this.stepIdx += value;
+            this.goalAnnouncementElem.classList.add("hidden");
+        }
+
+        this.miniCards[this.steps[this.stepIdx]].appendChild(this.fieldBall);
+    }
+
+    restartMatch() {
+        this.stepIdx = 0;
+        this.startingTeam = Number(!this.startingTeam);
+        this.steps = this.generateSteps();
+        console.log("starting", this.startingTeam);
+
+        this.teamBanner.updateScore();
+    }
+
+    createFieldBall() {
+        const result = document.createElement("img");
+        result.classList.add("ball");
+        result.src = "../assets/icons/icon_football-ball.svg";
+        result.alt = "Football ball";
+
+        return result;
+    }
+
+    createGoalAnnouncement() {
+        const result = document.createElement("div");
+        result.classList.add("goal-announcement");
+        result.textContent = "Goal";
+        this.field.append(result);
+
+        return result;
     }
 }
 
-let PREFERENCES = {
-    teamA: new TeamPreferences(),
-    teamB: new TeamPreferences(),
-};
-
-function toggleFullScreen() {
-    const content = document.getElementById("content");
-
-    const fullScreenElems = [content, BOARD];
-    fullScreenElems.forEach((element) => element.classList.toggle("full-screen"));
-
-    const hiddenElems = [BANNER_CONTAINER, SIDEBAR_LEFT, SIDEBAR_RIGHT];
-    hiddenElems.forEach((element) => element.classList.toggle("hidden"));
-}
-
-function nextStep() {
-    console.log("Next step....");
-}
-
-function previousStep() {
-    console.log("Previous step....");
-}
-
-function setup(teams, preferences, teamBanner) {
-    const players = getUniqueRandomElements(
-        DEFAULT_PLAYERS,
-        preferences.teamA.playerCount + preferences.teamB.playerCount,
-    );
-    teams[0].players = players.slice(0, preferences.teamA.playerCount);
-    teams[1].players = players.slice(preferences.teamA.playerCount);
-
-    const leftSidebarElem = teams[0].createSidebar();
-    SIDEBAR_LEFT.replaceChildren();
-    SIDEBAR_LEFT.appendChild(leftSidebarElem);
-
-    const rightSidebarElem = teams[1].createSidebar();
-    SIDEBAR_RIGHT.replaceChildren();
-    SIDEBAR_RIGHT.appendChild(rightSidebarElem);
-
-    players.forEach((player) => {
-        player.fullCardElem.addEventListener("click", () => {
-            teamBanner.updateSuccessRate();
-        });
-    });
-
-    MINI_CARD_CONTAINER.replaceChildren();
-
-    teams.forEach((team) => {
-        const playerCount = team.players.length;
-
-        team.players.forEach((player, i) => {
-            const miniCardElem = document.createElement("div");
-            miniCardElem.classList.add("mini-card", team.side, `count-${playerCount}`);
-
-            // If the playerCount is somehow invalid, pick the highest valid one.
-            let top, left;
-            if (!VALID_PLAYER_COUNTS.includes(playerCount)) {
-                [top, left] = POSITIONS[VALID_PLAYER_COUNTS[-1]][i];
-            } else {
-                [top, left] = POSITIONS[playerCount][i];
-            }
-            miniCardElem.style.top =
-                i < (playerCount + 1) / 2 ? `${top}%` : `${100 - top}%`;
-
-            miniCardElem.style.left =
-                team.side === Team.SIDE.LEFT ? `${left}%` : `${100 - left}%`;
-
-            const profilePictureElem = document.createElement("img");
-            profilePictureElem.src = player.profilePicturePath;
-            profilePictureElem.title = `${player.firstName} ${player.lastName}`;
-
-            miniCardElem.append(profilePictureElem);
-            MINI_CARD_CONTAINER.append(miniCardElem);
-        });
-    });
-}
-
 function main() {
-    const teams = getUniqueRandomElements(DEFAULT_TEAMS, 2);
-    teams[0].side = Team.SIDE.LEFT;
-    teams[1].side = Team.SIDE.RIGHT;
+    const game = new Game();
 
-    const teamBanner = new TeamBanner(teams);
-    const teamBannerElem = teamBanner.create();
-    BANNER_CONTAINER.appendChild(teamBannerElem);
+    game.setup();
 
-    setup(teams, PREFERENCES, teamBanner);
+    document
+        .getElementById("preference-form")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-    document.getElementById("teamForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const formData = new FormData(event.target);
-        PREFERENCES = {
-            teamA: new TeamPreferences(
-                parseInt(formData.get("teamA_player_count")),
-                formData.get("teamA_order"),
-            ),
-            teamB: new TeamPreferences(
-                parseInt(formData.get("teamB_player_count")),
-                formData.get("teamB_order"),
-            ),
-        };
-
-        setup(teams, PREFERENCES, teamBanner);
-    });
+            console.log("hello");
+            const formData = new FormData(event.target);
+            game.preferences = {
+                playerCount: parseInt(formData.get("teamA_player_count")),
+                teamAOrder: formData.get("teamA_order"),
+                teamBOrder: formData.get("teamB_order"),
+            };
+            game.setup();
+        });
 }
 
 window.onload = () => {
     main();
 };
-
-window.toggleFullScreen = toggleFullScreen;
-window.nextStep = nextStep;
-window.previousStep = previousStep;

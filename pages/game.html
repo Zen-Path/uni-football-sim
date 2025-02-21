@@ -21,11 +21,46 @@
                         class="field"
                         draggable="false" />
 
-                    <div id="mini-card-container"></div>
+                    <div id="mini-card-container">
+                        <div class="mini-card left count-10" style="top: 50%; left: 14%">
+                            <img
+                                class="profile-picture"
+                                src="../assets/images/players/cole-palmer.png"
+                                title="Cole Palmer"
+                                draggable="false" />
+                        </div>
+                    </div>
                 </div>
 
-                <form id="teamForm">
-                    <div class="action-area">
+                <div class="action-area">
+                    <div class="btn-container">
+                        <button id="previous-step-btn" type="button" class="arrow-btn">
+                            <img
+                                src="../assets/icons/icon_arrow-left.svg"
+                                alt="Left arrow icon"
+                                title="Previous step"
+                                draggable="false" />
+                        </button>
+                        <button
+                            id="toggle-full-screen-btn"
+                            type="button"
+                            class="full-screen-btn">
+                            <img
+                                src="../assets/icons/icon_full-screen.svg"
+                                alt="Full screen icon"
+                                title="Toggle full screen"
+                                draggable="false" />
+                        </button>
+                        <button id="next-step-btn" type="button" class="arrow-btn">
+                            <img
+                                src="../assets/icons/icon_arrow-right.svg"
+                                alt="Right arrow icon"
+                                title="Next step"
+                                draggable="false" />
+                        </button>
+                    </div>
+
+                    <form id="preference-form">
                         <div class="team-options-container left">
                             <select name="teamA_player_count">
                                 <option value="5">5</option>
@@ -41,57 +76,11 @@
                                 <option value="random">Random</option>
                             </select>
                         </div>
-
-                        <div class="btn-container">
-                            <button
-                                type="button"
-                                class="arrow-btn"
-                                onclick="previousStep()">
-                                <img
-                                    src="../assets/icons/icon_arrow-left.svg"
-                                    alt="Left arrow icon"
-                                    title="Previous step"
-                                    draggable="false" />
-                            </button>
-                            <button
-                                type="button"
-                                class="full-screen-btn"
-                                onclick="toggleFullScreen()">
-                                <img
-                                    src="../assets/icons/icon_full-screen.svg"
-                                    alt="Full screen icon"
-                                    title="Toggle full screen"
-                                    draggable="false" />
-                            </button>
-                            <button type="button" class="arrow-btn" onclick="nextStep()">
-                                <img
-                                    src="../assets/icons/icon_arrow-right.svg"
-                                    alt="Right arrow icon"
-                                    title="Next step"
-                                    draggable="false" />
-                            </button>
-                        </div>
-
-                        <div class="team-options-container right">
-                            <select name="teamB_player_count">
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                            <select name="teamB_order">
-                                <option value="manual">Manual</option>
-                                <option value="best">Best</option>
-                                <option value="worst">Worst</option>
-                                <option value="random">Random</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="apply-btn">Apply</button>
-                </form>
+                        <button type="submit" class="apply-btn">Apply</button>
+                    </form>
+                </div>
             </div>
+
             <div id="sidebar-right"></div>
         </main>
 

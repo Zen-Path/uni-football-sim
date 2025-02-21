@@ -3,10 +3,6 @@ import { PlayerCard } from "./player.js";
 
 export class Team {
     static LOGOS_DIR = "../assets/images/teams";
-    static SIDE = {
-        LEFT: "left",
-        RIGHT: "right",
-    };
 
     static PLAYER_ORDER = {
         MANUAL: 0,
@@ -22,43 +18,31 @@ export class Team {
         this.side = side;
         this.players = players;
 
-        this.positions = [];
-        this.winningChance = 50.0;
-
-        this.sidebarElem = null;
+        this.score = 0;
     }
 
     createSidebar() {
         const sidebarElem = document.createElement("div");
         sidebarElem.classList.add("full-cards-container", "hidden-scroll-bar");
-
         sidebarElem.append(...this.getFullCards());
-        this.sidebarElem = sidebarElem;
+
         return sidebarElem;
     }
 
     getFullCards() {
         return this.players.map((player) => new PlayerCard(player).create());
     }
-
-    // TODO: improve this logic
-    getMiniCards() {
-        return this.positions.map((player) => player.createMiniCard());
-    }
-
-    calcWinningChance() {
-        const winningChance = Math.random() * 100;
-        this.winningChance = winningChance;
-        return winningChance;
-    }
 }
 
 export class TeamBanner {
-    static TEAMS_WINNING_CHANCE_ID = "teams-winning-chance";
+    static SCORE_ELEM_ID = "score";
     static BANNER_CONTAINER_ID = "banner-container";
 
-    constructor(teams) {
-        this.teams = teams;
+    constructor(teamA, teamB) {
+        this.teamA = teamA;
+        this.teamB = teamB;
+
+        this.scoreElem = null;
     }
 
     create() {
@@ -66,9 +50,9 @@ export class TeamBanner {
         bannerElem.classList.add("banner");
 
         bannerElem.append(
-            this.#createTeamBadge(this.teams[0]),
+            this.#createTeamBadge(this.teamA),
             this.#createRibbon(),
-            this.#createTeamBadge(this.teams[1]),
+            this.#createTeamBadge(this.teamB),
         );
 
         return bannerElem;
@@ -76,7 +60,7 @@ export class TeamBanner {
 
     #createTeamBadge(team) {
         const badgeElem = document.createElement("div");
-        badgeElem.classList.add("badge", team.side);
+        badgeElem.classList.add("badge", team.side ? "right" : "left");
 
         const logoElem = document.createElement("img");
         logoElem.classList.add("logo");
@@ -102,31 +86,23 @@ export class TeamBanner {
         iconElem.alt = "Gold ball";
         iconElem.draggable = false;
 
-        const chanceElem = document.createElement("p");
-        chanceElem.id = TeamBanner.TEAMS_WINNING_CHANCE_ID;
-        chanceElem.textContent = this.#composeSuccessRate();
+        const scoreElem = document.createElement("p");
+        scoreElem.textContent = this.#composeScore();
+        this.scoreElem = scoreElem;
 
-        ribbonElem.append(iconElem, chanceElem);
+        ribbonElem.append(iconElem, scoreElem);
+
         return ribbonElem;
     }
 
-    updateSuccessRate() {
-        const successRateElem = document.querySelector(
-            `#${TeamBanner.TEAMS_WINNING_CHANCE_ID}`,
-        );
-        if (successRateElem) {
-            successRateElem.textContent = this.#composeSuccessRate();
+    updateScore() {
+        if (this.scoreElem) {
+            this.scoreElem.textContent = this.#composeScore();
         }
     }
 
-    #composeSuccessRate() {
-        // TODO: Replace with actual logic
-        const teamAChance = this.teams[0].calcWinningChance();
-        const teamBChance = 100 - teamAChance;
-
-        return [teamAChance, teamBChance]
-            .map((chance) => `${String(chance.toFixed(0)).padStart(2, 0)}`)
-            .join(":");
+    #composeScore() {
+        return [this.teamA, this.teamB].map((team) => String(team.score)).join(":");
     }
 }
 
