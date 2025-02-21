@@ -1,6 +1,6 @@
-import { getUniqueRandomElements, randRange } from "./utils.js";
+import { createOption, getUniqueRandomElements, randRange } from "./utils.js";
 import { Team, TeamBanner, DEFAULT_TEAMS } from "./team.js";
-import { MiniCard } from "./player.js";
+import { MiniCard, VALID_PLAYER_COUNTS } from "./player.js";
 import { DEFAULT_PLAYERS } from "./player.js";
 
 class Game {
@@ -28,15 +28,20 @@ class Game {
             this.updateStep(-1);
         });
 
+        this.preferences = {
+            playerCount: 10,
+            playerOrder: Team.PLAYER_ORDER.BEST,
+        };
+
+        this.preferencesFormContainer = document.getElementById(
+            "preferences-form-container",
+        );
+        this.preferencesForm = this.createPreferencesForm();
+        this.preferencesFormContainer.append(this.preferencesForm);
+
         this.fieldBall = this.createFieldBall();
         this.goalAnnouncementElem = this.createGoalAnnouncement();
         this.goalAnnouncementElem.classList.add("hidden");
-
-        this.preferences = {
-            playerCount: 10,
-            teamAOrder: Team.PLAYER_ORDER.BEST,
-            teamBOrder: Team.PLAYER_ORDER.WORST,
-        };
 
         this.teams = getUniqueRandomElements(DEFAULT_TEAMS, 2).map((team, i) => {
             team.side = i;
@@ -156,7 +161,6 @@ class Game {
         this.stepIdx = 0;
         this.startingTeam = Number(!this.startingTeam);
         this.steps = this.generateSteps();
-        console.log("starting", this.startingTeam);
 
         this.teamBanner.updateScore();
     }
@@ -178,6 +182,43 @@ class Game {
 
         return result;
     }
+
+    createPreferencesForm() {
+        const formElem = document.createElement("form");
+        formElem.id = "preferences-form";
+
+        const preferencesContainer = document.createElement("div");
+        preferencesContainer.classList.add("preferences-container");
+
+        const playerCountPreference = document.createElement("select");
+        playerCountPreference.name = "player-count";
+        playerCountPreference.append(
+            ...VALID_PLAYER_COUNTS.map((value) => createOption(value)),
+        );
+        playerCountPreference.selectedIndex = VALID_PLAYER_COUNTS.indexOf(
+            this.preferences.playerCount,
+        );
+
+        const playerOrderPreference = document.createElement("select");
+        playerOrderPreference.name = "player-order";
+        playerOrderPreference.append(
+            ...Object.keys(Team.PLAYER_ORDER).map((value) => createOption(value)),
+        );
+        playerOrderPreference.selectedIndex = Object.values(Team.PLAYER_ORDER).indexOf(
+            this.preferences.playerOrder,
+        );
+
+        preferencesContainer.append(playerCountPreference, playerOrderPreference);
+
+        const submitBtn = document.createElement("button");
+        submitBtn.type = "submit";
+        submitBtn.classList.add("submit-btn");
+        submitBtn.textContent = "Apply";
+
+        formElem.append(preferencesContainer, submitBtn);
+
+        return formElem;
+    }
 }
 
 function main() {
@@ -185,20 +226,16 @@ function main() {
 
     game.setup();
 
-    document
-        .getElementById("preference-form")
-        .addEventListener("submit", function (event) {
-            event.preventDefault();
+    game.preferencesForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-            console.log("hello");
-            const formData = new FormData(event.target);
-            game.preferences = {
-                playerCount: parseInt(formData.get("teamA_player_count")),
-                teamAOrder: formData.get("teamA_order"),
-                teamBOrder: formData.get("teamB_order"),
-            };
-            game.setup();
-        });
+        const formData = new FormData(event.target);
+        game.preferences = {
+            playerCount: parseInt(formData.get("player-count")),
+            playerOrder: formData.get("player-order"),
+        };
+        game.setup();
+    });
 }
 
 window.onload = () => {

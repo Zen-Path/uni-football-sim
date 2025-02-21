@@ -435,7 +435,7 @@ body {
     gap: 40px;
 }
 
-#preference-form {
+#preferences-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -443,18 +443,18 @@ body {
     gap: 10px;
 }
 
-.team-options-container {
+.preferences-container {
     display: flex;
     gap: 15px;
 }
 
-.team-options-container select {
+.preferences-container select {
     text-align: center;
     padding: 4px 8px;
     border-radius: 5px;
 }
 
-.team-options-container select {
+.preferences-container select {
     background-color: var(--clr-surface-a50);
 }
 
@@ -491,7 +491,7 @@ body {
     height: var(--dimension);
 }
 
-.apply-btn {
+.submit-btn {
     padding: 8px 10px;
     width: 100px;
     border-radius: 10px;
@@ -504,7 +504,7 @@ body {
     background: linear-gradient(to right, #ff416c, #ff4b2b);
 }
 
-.apply-btn:hover {
+.submit-btn:hover {
     outline: 2px solid white;
 }
 
