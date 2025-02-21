@@ -129,7 +129,7 @@ export class MiniCard extends Element {
         const profilePictureElem = document.createElement("img");
         profilePictureElem.classList.add("profile-picture");
         profilePictureElem.src = player.profilePicturePath;
-        profilePictureElem.title = `${player.firstName} ${player.lastName}`;
+        profilePictureElem.title = `${player.fullName} (${team.side * playerCount + i})`;
         profilePictureElem.draggable = false;
 
         miniCardElem.append(profilePictureElem);
