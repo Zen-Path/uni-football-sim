@@ -120,7 +120,7 @@ class Game {
 
         steps.push(goalKeeperPositions[this.startingTeam]);
 
-        for (let i = 0; i < randRange(3, 15); i++) {
+        for (let i = 0; i < randRange(3, this.players.length); i++) {
             let playerIdx = randRange(1, this.players.length - 1);
             while (
                 steps[steps.length - 1] === playerIdx ||
