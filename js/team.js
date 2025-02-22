@@ -131,26 +131,26 @@ export class TeamBanner {
 
     createScoreContainer() {
         const result = document.createElement("div");
-        result.classList.add("score-container")
+        result.classList.add("score-container");
 
         const scoreElems = [this.teamA, this.teamB].map((team) => {
             const score = document.createElement("span");
             score.classList.add("score");
             score.textContent = team.score;
             return score;
-        })
+        });
 
         const separator = document.createElement("span");
         separator.classList.add("separator");
 
-        result.append(scoreElems[0], separator, scoreElems[1])
+        result.append(scoreElems[0], separator, scoreElems[1]);
         return result;
     }
 
     updateScore() {
         this.ribbonElem.removeChild(this.scoreContainer);
         this.scoreContainer = this.createScoreContainer();
-        this.ribbonElem.append(this.scoreContainer)
+        this.ribbonElem.append(this.scoreContainer);
     }
 }
 
