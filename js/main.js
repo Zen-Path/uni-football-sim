@@ -29,7 +29,7 @@ class Game {
         });
 
         this.preferences = {
-            playerCount: 10,
+            playerCount: VALID_PLAYER_COUNTS[1],
             playerOrder: Team.PLAYER_ORDER.BEST,
         };
 
