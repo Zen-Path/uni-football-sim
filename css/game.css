@@ -393,6 +393,8 @@ body {
     color: red;
     transform: translate(-50%, -50%);
 
+    height: 10%;
+
     aspect-ratio: 1;
 }
 
@@ -405,7 +407,15 @@ body {
 }
 
 .mini-card.count-10 {
-    height: 12%;
+    height: 14%;
+}
+
+.mini-card.count-20 {
+    height: 11%;
+}
+
+.mini-card.count-50 {
+    height: 8%;
 }
 
 .mini-card .profile-picture {
