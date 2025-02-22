@@ -66,6 +66,9 @@ class Game {
 
             this.teams[0].players = this.players.slice(0, this.preferences.playerCount);
             this.teams[1].players = this.players.slice(this.preferences.playerCount);
+
+            this.teams.forEach((team) => (team.score = 0));
+            this.teamBanner.updateScore();
         }
 
         this.teams.forEach((team) => team.orderPlayers(this.preferences.playerOrder));
