@@ -131,7 +131,11 @@ class Game {
             steps.push(playerIdx);
         }
 
-        steps.push(goalKeeperPositions[randRange(0, 1)]);
+        steps.push(
+            goalKeeperPositions[
+                Number(steps[steps.length - 1] < this.preferences.playerCount)
+            ],
+        );
 
         return steps;
     }
