@@ -30,7 +30,7 @@ class Game {
 
         this.preferences = {
             playerCount: VALID_PLAYER_COUNTS[1],
-            playerOrder: Team.PLAYER_ORDER.BEST,
+            playerOrder: Team.PLAYER_ORDER.ASCENDING,
         };
 
         this.preferencesFormContainer = document.getElementById(

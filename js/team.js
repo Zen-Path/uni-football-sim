@@ -6,10 +6,11 @@ export class Team {
     static LOGOS_DIR = "../assets/images/teams";
 
     static PLAYER_ORDER = {
-        MANUAL: 0,
-        BEST: 1,
-        WORST: 2,
-        RANDOM: 3,
+        ASCENDING: 0,
+        DESCENDING: 1,
+        MONTE_CARLO: 2,
+        BELLMAN_FORD: 3,
+        RANDOM: 4,
     };
 
     constructor(name, logo, side = null, players = null) {
@@ -36,10 +37,10 @@ export class Team {
 
     orderPlayers(order) {
         switch (order) {
-            case Team.PLAYER_ORDER.BEST:
+            case Team.PLAYER_ORDER.ASCENDING:
                 this.players = this.#sortPlayersBest();
                 break;
-            case Team.PLAYER_ORDER.WORST:
+            case Team.PLAYER_ORDER.DESCENDING:
                 this.players = this.#sortPlayersBest().reverse();
                 break;
             case Team.PLAYER_ORDER.RANDOM:
