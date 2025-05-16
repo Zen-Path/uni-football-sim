@@ -211,6 +211,7 @@ class Game {
 
         const playerCountPreference = document.createElement("select");
         playerCountPreference.name = "player-count";
+        playerCountPreference.title = "Player Count";
         playerCountPreference.append(
             ...VALID_PLAYER_COUNTS.map((value) => createOption(value)),
         );
@@ -220,6 +221,7 @@ class Game {
 
         const playerOrderPreference = document.createElement("select");
         playerOrderPreference.name = "player-order";
+        playerOrderPreference.title = "Player Order";
         playerOrderPreference.append(
             ...Object.entries(Team.PLAYER_ORDER).map(([text, value]) =>
                 createOption(value, text),
