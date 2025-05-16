@@ -1,5 +1,6 @@
 import { PLAYERS_DATA } from "../data/players.js";
 import { Element, Stat, randRange } from "./utils.js";
+import { LINEAR_REGRESSION_MODEL } from "./linear-regression.js";
 
 class Player {
     static PROFILE_PICTURES_DIR = "../assets/images/players";
@@ -41,8 +42,11 @@ class Player {
     }
 
     calcStrength() {
-        // TODO: Use proper algorithm.
-        return randRange(30, 99);
+        return LINEAR_REGRESSION_MODEL.predict(
+            [this.accuracy, this.reach, this.capture, this.block].map(
+                (stat) => stat.value,
+            ),
+        ).toFixed(0);
     }
 }
 
