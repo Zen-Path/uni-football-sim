@@ -55,8 +55,6 @@ export class Team {
     }
 
     #sortPlayersBest() {
-        // TODO: Use proper algorithm.
-
         return this.players.sort((a, b) => {
             // First, sort by strength (descending)
             if (b.strength !== a.strength) {

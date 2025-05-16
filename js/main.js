@@ -3,6 +3,8 @@ import { Team, TeamBanner, DEFAULT_TEAMS } from "./team.js";
 import { MiniCard, VALID_PLAYER_COUNTS } from "./player.js";
 import { DEFAULT_PLAYERS } from "./player.js";
 
+import { monteCarloSimulation, bellmanFordSimulation } from "./move-generator.js";
+
 class Game {
     constructor() {
         this.bannerContainer = document.getElementById(TeamBanner.BANNER_CONTAINER_ID);
@@ -54,6 +56,8 @@ class Game {
 
         this.players = [];
         this.startingTeam = randRange(0, 1);
+
+        this.goalKeeperPositions = [0, this.players.length / 2];
     }
 
     setup() {
@@ -117,30 +121,41 @@ class Game {
     generateSteps() {
         let steps = [];
 
-        // TODO: Use proper algorithm.
+        steps.push(this.goalKeeperPositions[this.startingTeam]);
 
-        const goalKeeperPositions = [0, this.players.length / 2];
-
-        steps.push(goalKeeperPositions[this.startingTeam]);
-
-        for (let i = 0; i < randRange(3, this.players.length); i++) {
-            let playerIdx = randRange(1, this.players.length - 1);
-            while (
-                steps[steps.length - 1] === playerIdx ||
-                goalKeeperPositions.includes(playerIdx)
-            ) {
-                playerIdx = randRange(1, this.players.length - 1);
-            }
-            steps.push(playerIdx);
+        let moves = [];
+        switch (this.preferences.playerOrder) {
+            case Team.PLAYER_ORDER.MONTE_CARLO:
+                moves = monteCarloSimulation(10, 1000, () => this.validator(steps));
+                break;
+            case Team.PLAYER_ORDER.BELLMAN_FORD:
+                moves = bellmanFordSimulation(this.players, () => this.validator(steps));
+                break;
+            default:
+                moves = this.validator(steps);
+                break;
         }
 
         steps.push(
-            goalKeeperPositions[
+            this.goalKeeperPositions[
                 Number(steps[steps.length - 1] < this.preferences.playerCount)
             ],
         );
 
         return steps;
+    }
+
+    validator(steps) {
+        for (let i = 0; i < randRange(3, this.players.length * 2); i++) {
+            let playerIdx = randRange(1, this.players.length - 1);
+            while (
+                steps[steps.length - 1] === playerIdx ||
+                this.goalKeeperPositions.includes(playerIdx)
+            ) {
+                playerIdx = randRange(1, this.players.length - 1);
+            }
+            steps.push(playerIdx);
+        }
     }
 
     updateStep(value) {

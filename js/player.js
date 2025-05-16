@@ -1,6 +1,6 @@
 import { PLAYERS_DATA } from "../data/players.js";
 import { Element, Stat, randRange } from "./utils.js";
-import { LINEAR_REGRESSION_MODEL } from "./linear-regression.js";
+import { LINEAR_REGRESSION_MODEL } from "./move-generator.js";
 
 class Player {
     static PROFILE_PICTURES_DIR = "../assets/images/players";
@@ -144,7 +144,6 @@ export class MiniCard extends Element {
     }
 }
 
-// TODO: rewrite once logic is discussed
 // prettier-ignore
 const POSITIONS = {
     5: [

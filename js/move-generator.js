@@ -21,8 +21,8 @@ class LinearRegression {
     /**
      * Fit the model to your data.
      * Automatically normalizes each feature.
-     * @param {number[][]} X    – m×n matrix of raw features
-     * @param {number[]} y      – length-m array of targets
+     * @param {number[][]} X – m×n matrix of raw features
+     * @param {number[]} y – length-m array of targets
      */
     fit(X, y) {
         const m = X.length;
@@ -103,7 +103,7 @@ class LinearRegression {
     }
 }
 
-// DATA
+// Data
 const TRAINING_FEATURES = [
     [99, 99, 99, 99],
     [99, 99, 99, 50],
@@ -115,12 +115,66 @@ const TRAINING_FEATURES = [
 ];
 const TRAINING_STRENGTH = [99, 83, 80, 86, 70, 34, 66];
 
-export const LINEAR_REGRESSION_MODEL = new LinearRegression(0.05, 10000);
+export const LINEAR_REGRESSION_MODEL = new LinearRegression(0.05, 1000);
 LINEAR_REGRESSION_MODEL.fit(TRAINING_FEATURES, TRAINING_STRENGTH);
 
-// SANITY CHECK
+// Sanity check
 const testPlayerStats = [80, 32, 52, 60];
 console.log(
     "Linear Regression - Player Strength:",
     LINEAR_REGRESSION_MODEL.predict(testPlayerStats).toFixed(0),
 );
+
+// MONTE CARLO
+
+export function monteCarloSimulation(categories, iterations, validator) {
+    // 1. Build a frequency table
+    const frequencies = new Array(categories).fill(0);
+    for (let i = 0; i < iterations; i++) {
+        const pick = Math.floor(Math.random() * categories);
+        frequencies[pick]++;
+    }
+
+    // 2. Smooth it
+    const smoothed = frequencies.map((count, idx) => {
+        const prev = frequencies[idx === 0 ? categories - 1 : idx - 1];
+        const next = frequencies[idx === categories - 1 ? 0 : idx + 1];
+        return Math.round((prev + count + next) / 3);
+    });
+
+    return validator(smoothed);
+}
+
+// Bellman-Ford
+
+export function bellmanFordSimulation(players, validator) {
+    const V = players.length;
+    // 1. Build “edges” between every pair of players, using strength
+    // difference as the weight.
+    const edges = [];
+    for (let i = 0; i < V; i++) {
+        for (let j = 0; j < V; j++) {
+            if (i === j) continue;
+            const w = Math.abs(players[i].strength - players[j].strength) || 1;
+            edges.push({ from: i, to: j, weight: w });
+        }
+    }
+
+    // 2. Initialize distances
+    const dist = new Array(V).fill(Infinity);
+    dist[0] = 0; // arbitrary source = first player
+
+    // 3. Relax edges up to V-1 times
+    for (let pass = 0; pass < V - 1; pass++) {
+        let updated = false;
+        for (const { from, to, weight } of edges) {
+            if (dist[from] + weight < dist[to]) {
+                dist[to] = dist[from] + weight;
+                updated = true;
+            }
+        }
+        if (!updated) break;
+    }
+
+    return validator(dist);
+}
