@@ -1,0 +1,10 @@
+repos:
+    - repo: https://github.com/pre-commit/mirrors-prettier
+      rev: v4.0.0-alpha.8
+      hooks:
+          - id: prettier
+            name: prettier (js|json|css|html|md)
+            # Either list the file extensions you want prettified:
+            files: \.(js|jsx|ts|tsx|json|css|scss|html|md)$
+            # or exclude python files:
+            # exclude: \.py$
