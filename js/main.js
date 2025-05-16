@@ -57,7 +57,7 @@ class Game {
         this.players = [];
         this.startingTeam = randRange(0, 1);
 
-        this.goalKeeperPositions = [0, this.players.length / 2];
+        this.goalKeeperPositions = [0, 0];
     }
 
     setup() {
@@ -121,6 +121,7 @@ class Game {
     generateSteps() {
         let steps = [];
 
+        this.goalKeeperPositions = [0, this.players.length / 2];
         steps.push(this.goalKeeperPositions[this.startingTeam]);
 
         let moves = [];
