@@ -168,6 +168,10 @@ class Game {
             this.goalAnnouncementElem.classList.add("hidden");
         }
 
+        this.miniCards[this.steps[Math.max(this.stepIdx - 1, 0)]].classList.remove(
+            "active",
+        );
+        this.miniCards[this.steps[this.stepIdx]].classList.add("active");
         this.miniCards[this.steps[this.stepIdx]].appendChild(this.fieldBall);
     }
 

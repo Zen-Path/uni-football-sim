@@ -138,6 +138,8 @@ export class MiniCard extends Element {
 
         miniCardElem.append(profilePictureElem);
 
+        player.miniCardElem = miniCardElem;
+
         return miniCardElem;
     }
 }

@@ -433,6 +433,10 @@ body {
     background-color: var(--clr-surface-b30);
 }
 
+.mini-card.active .profile-picture {
+    border: 4px solid var(--clr-gold);
+}
+
 .mini-card .ball {
     position: absolute;
     top: 50%;
