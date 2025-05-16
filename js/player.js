@@ -27,7 +27,7 @@ class Player {
 
         this.stats = [this.accuracy, this.reach, this.capture, this.block].map((stat) => {
             if (!stat.value) {
-                stat.value = randRange(20, 100);
+                stat.value = randRange(35, 99);
             }
             return stat;
         });
