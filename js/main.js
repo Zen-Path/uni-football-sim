@@ -137,6 +137,8 @@ class Game {
                 break;
         }
 
+        console.log("Steps", steps);
+
         steps.push(
             this.goalKeeperPositions[
                 Number(steps[steps.length - 1] < this.preferences.playerCount)
