@@ -147,7 +147,7 @@ class Game {
     }
 
     validator(steps) {
-        for (let i = 0; i < randRange(3, this.players.length * 2); i++) {
+        for (let i = 0; i < randRange(3, this.players.length * 1.5); i++) {
             let playerIdx = randRange(1, this.players.length - 1);
             while (
                 steps[steps.length - 1] === playerIdx ||
