@@ -35,26 +35,7 @@ export class Team {
         return this.players.map((player) => new PlayerCard(player).create());
     }
 
-    orderPlayers(order) {
-        switch (order) {
-            case Team.PLAYER_ORDER.ASCENDING:
-                this.players = this.#sortPlayersBest();
-                break;
-            case Team.PLAYER_ORDER.DESCENDING:
-                this.players = this.#sortPlayersBest().reverse();
-                break;
-            case Team.PLAYER_ORDER.RANDOM:
-                this.players = shuffleArray(this.players);
-                break;
-            case Team.PLAYER_ORDER.MANUAL:
-                // nothing to do.
-                break;
-            default:
-                break;
-        }
-    }
-
-    #sortPlayersBest() {
+    sortPlayers() {
         return this.players.sort((a, b) => {
             // First, sort by strength (descending)
             if (b.strength !== a.strength) {

@@ -75,7 +75,7 @@ class Game {
             this.teamBanner.updateScore();
         }
 
-        this.teams.forEach((team) => team.orderPlayers(this.preferences.playerOrder));
+        this.teams.forEach((team) => team.sortPlayers());
 
         const leftSidebarElem = this.teams[0].createSidebar();
         this.sidebarLeft.replaceChildren();
