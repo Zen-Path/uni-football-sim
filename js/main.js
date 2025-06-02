@@ -32,7 +32,7 @@ class Game {
 
         this.preferences = {
             playerCount: VALID_PLAYER_COUNTS[1],
-            playerOrder: Team.PLAYER_ORDER.ASCENDING,
+            stepGenerator: Team.STEP_GENERATOR.DESCENDING,
         };
 
         this.preferencesFormContainer = document.getElementById(
@@ -125,11 +125,11 @@ class Game {
         steps.push(this.goalKeeperPositions[this.startingTeam]);
 
         let moves = [];
-        switch (this.preferences.playerOrder) {
-            case Team.PLAYER_ORDER.MONTE_CARLO:
+        switch (this.preferences.stepGenerator) {
+            case Team.STEP_GENERATOR.MONTE_CARLO:
                 moves = monteCarloSimulation(10, 1000, () => this.validator(steps));
                 break;
-            case Team.PLAYER_ORDER.BELLMAN_FORD:
+            case Team.STEP_GENERATOR.BELLMAN_FORD:
                 moves = bellmanFordSimulation(this.players, () => this.validator(steps));
                 break;
             default:
@@ -235,19 +235,19 @@ class Game {
             this.preferences.playerCount,
         );
 
-        const playerOrderPreference = document.createElement("select");
-        playerOrderPreference.name = "player-order";
-        playerOrderPreference.title = "Player Order";
-        playerOrderPreference.append(
-            ...Object.entries(Team.PLAYER_ORDER).map(([text, value]) =>
+        const stepGeneratorPreference = document.createElement("select");
+        stepGeneratorPreference.name = "step-generator";
+        stepGeneratorPreference.title = "Step Generator";
+        stepGeneratorPreference.append(
+            ...Object.entries(Team.STEP_GENERATOR).map(([text, value]) =>
                 createOption(value, text),
             ),
         );
-        playerOrderPreference.selectedIndex = Object.values(Team.PLAYER_ORDER).indexOf(
-            this.preferences.playerOrder,
-        );
+        stepGeneratorPreference.selectedIndex = Object.values(
+            Team.STEP_GENERATOR,
+        ).indexOf(this.preferences.stepGenerator);
 
-        preferencesContainer.append(playerCountPreference, playerOrderPreference);
+        preferencesContainer.append(playerCountPreference, stepGeneratorPreference);
 
         const submitBtn = document.createElement("button");
         submitBtn.type = "submit";
@@ -271,7 +271,7 @@ function main() {
         const formData = new FormData(event.target);
         game.preferences = {
             playerCount: parseInt(formData.get("player-count")),
-            playerOrder: parseInt(formData.get("player-order")),
+            stepGenerator: parseInt(formData.get("step-generator")),
         };
         game.setup();
     });

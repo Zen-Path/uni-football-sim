@@ -5,7 +5,7 @@ import { shuffleArray } from "./utils.js";
 export class Team {
     static LOGOS_DIR = "../assets/images/teams";
 
-    static PLAYER_ORDER = {
+    static STEP_GENERATOR = {
         ASCENDING: 0,
         DESCENDING: 1,
         MONTE_CARLO: 2,
