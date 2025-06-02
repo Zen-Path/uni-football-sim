@@ -143,7 +143,10 @@ class Game {
                 break;
         }
 
-        console.log("Steps", steps);
+        console.log(
+            `Steps (${Object.keys(Team.STEP_GENERATOR)[this.preferences.stepGenerator]})`,
+            steps,
+        );
 
         steps.push(
             this.goalKeeperPositions[
