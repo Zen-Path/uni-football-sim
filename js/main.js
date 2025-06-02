@@ -126,6 +126,12 @@ class Game {
 
         let moves = [];
         switch (this.preferences.stepGenerator) {
+            case Team.STEP_GENERATOR.DESCENDING:
+                steps.push(...this.generateSortedPlayersSteps());
+                break;
+            case Team.STEP_GENERATOR.ASCENDING:
+                steps.push(...this.generateSortedPlayersSteps().reverse());
+                break;
             case Team.STEP_GENERATOR.MONTE_CARLO:
                 moves = monteCarloSimulation(10, 1000, () => this.validator(steps));
                 break;
@@ -146,6 +152,13 @@ class Game {
         );
 
         return steps;
+    }
+
+    generateSortedPlayersSteps() {
+        return Array.from(
+            { length: this.preferences.playerCount * 2 },
+            (_, i) => i,
+        ).filter((step) => !this.goalKeeperPositions.includes(step));
     }
 
     validator(steps) {
